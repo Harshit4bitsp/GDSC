@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load socialaccount %}
+{% load static %}
+
+<html lang="en">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'home/main.css' %}">
+
+    {% if title %}
+        <title>Notes App - {{ title }}</title>
+    {% else %}
+        <title>Notes App</title>
+    {% endif %}
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-black fixed-top">
+        <div class="container">
+            {% if user.is_authenticated %}
+                <a class="navbar-brand mr-4" href="{% url 'home' %}">Welcome, {{ user.first_name }}</a>
+            {% else %}
+                <a class="navbar-brand mr-4" href="{% url 'home' %}">Home</a>
+            {% endif %}
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{% url 'add' %}">Add note</a>
+                {% endif %}
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="nav-item nav-link" href="{% provider_login_url 'google' %}">Login</a>
+                {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container" id="content_main">
+      <div class="row">
+       <div class="col-md-8">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+          <div class="content-section">
+            <h3>
+                <form action="{% url 'search' %}" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <input type="text" class="searchbar" name="tag" value="">
+                    </div>
+                    <div class="right-align">
+                        <input type="submit" class="btn black" value="Search for tag" maxlength="20">
+                    </div>
+                </form>
+            </h3>
+{#            <p class='text-muted'>Search for tags#}
+{#              <ul class="list-group">#}
+{#                <li class="list-group-item list-group-item-light">Latest Posts</li>#}
+{#                <li class="list-group-item list-group-item-light">Announcements</li>#}
+{#                <li class="list-group-item list-group-item-light">Calendars</li>#}
+{#                <li class="list-group-item list-group-item-light">etc</li>#}
+{#              </ul>#}
+{#            </p>#}
+          </div>
+        </div>
+      </div>
+    </main>
+
+</body>
+</html>
+{#{% if user.is_authenticated %}#}
+{#        <p>Welcome, You are logged in as {{ user.username }}</p>#}
+{#    {% else %}#}
+{#        <a href="{% provider_login_url 'google' %}">Login With Google</a>#}
+{#    {% endif %}#}

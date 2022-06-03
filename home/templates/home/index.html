@@ -1,0 +1,29 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+
+    {% for note in notes %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+{#              <a class="mr-2" href="#">{{ i.vendor }}</a>#}
+              <small class="text-muted">{{ note.date|date:"d F, Y"}}</small>
+
+            </div>
+                  <h4><div><a class="article-title" href="{% url 'home' %}">{{ note.heading }}</a></div>
+                </h4>
+              <h6>{{ note.content }}</h6>
+              <a href="{% url 'edit' note.id %}">
+                <button class="btn black">
+                    Edit
+                </button>
+              </a>
+              <a href="{% url 'delete' note.id %}">
+                <button class="btn black">
+                    Delete
+                </button>
+              </a>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
