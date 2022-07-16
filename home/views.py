@@ -3,15 +3,17 @@ from home.models import *
 from home.forms import NoteForm, NoteModelForm
 from home.models import Note
 from django.contrib import messages
+from taggit.models import Tag
 
 # Create your views here.
 def homepage(request):
     user = request.user
     notes = []
+    tags = Tag.objects.all()
     if request.user.is_authenticated:
         notes = Note.objects.filter(user=user)
     context = {
-        'notes': notes,
+        'notes': notes, 'tags': tags
     }
     return render(request, 'home/index.html', context)
 
@@ -89,9 +91,13 @@ def delete_note(request, note_id=None):
 
 
 def search_tags(request):
+    tags = Tag.objects.all()
     if request.method == 'POST':
         key = request.POST.get('tag')
         if key == "":
             return redirect(homepage)
 
-    return redirect
+    return redirect(homepage)
+
+
+    

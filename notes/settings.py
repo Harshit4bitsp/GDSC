@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'home',
 
     'crispy_forms',
+    
 
     'taggit',
 
@@ -156,3 +157,5 @@ SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+TAGGIT_CASE_INSENSITIVE = True
